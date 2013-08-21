@@ -46,4 +46,48 @@ global class DSLTest
         System.assertEquals( 1, filtered.size() );
         System.assertEquals( newChangedTo42.Id, filtered[0].get('Id') );
     }
+
+    private static testMethod void smokeTests()
+    {
+        List<String> tests = new List<String>
+        {
+            'and(hasChanged(Amount),isEqual(Amount,42))',
+            'or(hasChanged(Amount),isEqual(Amount,42))',
+            'not(and(hasChanged(Amount),isEqual(Amount,42)))',
+            'and(hasChanged(Amount),isEqual(Amount,42.2))',
+            'and(hasChanged(Amount),isEqual(Stage,"Complete"))',
+            'and(hasChanged(Amount),notEqual(Amount,42))'//,
+//            'and(isNew(),isEqual(Amount,42))'
+        };
+
+        List<String> errorCases = new List<String>();
+
+        Test.startTest();
+
+            for ( String testCase : tests )
+            {
+                Object parsed;
+
+                try
+                {
+                    parsed = DSL.parse( testCase );
+                }
+                catch ( Exception ex )
+                {
+                    errorCases.add( testCase );
+                }
+
+                if ( parsed == null )
+                {
+                    errorCases.add( testCase );
+                }
+            }
+
+        Test.stopTest();
+
+        if ( !errorCases.isEmpty() )
+        {
+            System.assert( false, 'Error parsing the following cases:\n' + String.join( errorCases, '\n' ) );
+        }
+    }
 }
