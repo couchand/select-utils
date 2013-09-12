@@ -9,33 +9,77 @@ global class DSL
 
     global static Select.Filter buildFilter( Parser.FunctionCall call )
     {
-        if ( call.name.toLowerCase() == 'haschanged' )
+        FilterFactory factory = registeredKeywords.get( call.name.toLowerCase() );
+
+        if ( factory != null )
+        {
+            return factory.build( call );
+        }
+
+        return null;
+    }
+
+    global static Map<String, FilterFactory> registeredKeywords = new Map<String, FilterFactory>{
+        'haschanged' => new HasChangedFactory(),
+        'isequal' => new IsEqualFactory(),
+        'notequal' => new NotEqualFactory(),
+        'and' => new AndFactory(),
+        'or' => new OrFactory(),
+        'not' => new NotFactory()
+    };
+
+    global interface FilterFactory
+    {
+        Select.Filter build( Parser.FunctionCall call );
+    }
+
+    global class HasChangedFactory implements FilterFactory
+    {
+        global Select.Filter build( Parser.FunctionCall call )
         {
             return Select.Field.hasChanged( (String)call.parameters[0] );
         }
-        if ( call.name.toLowerCase() == 'isequal' )
+    }
+
+    global class IsEqualFactory implements FilterFactory
+    {
+        global Select.Filter build( Parser.FunctionCall call )
         {
             return Select.Field.isEqual( (String)call.parameters[0], JSON.deserializeUntyped( (String)call.parameters[1] ) );
         }
-        if ( call.name.toLowerCase() == 'notequal' )
+    }
+
+    global class NotEqualFactory implements FilterFactory
+    {
+        global Select.Filter build( Parser.FunctionCall call )
         {
             return Select.Field.notEqual( (String)call.parameters[0], JSON.deserializeUntyped( (String)call.parameters[1] ) );
         }
-        if ( call.name.toLowerCase() == 'and' )
+    }
+
+    global class AndFactory implements FilterFactory
+    {
+        global Select.Filter build( Parser.FunctionCall call )
         {
             return buildFilter( (Parser.FunctionCall)call.parameters[0] )
             .andx( buildFilter( (Parser.FunctionCall)call.parameters[1] ) );
         }
-        if ( call.name.toLowerCase() == 'or' )
+    }
+
+    global class OrFactory implements FilterFactory
+    {
+        global Select.Filter build( Parser.FunctionCall call )
         {
             return buildFilter( (Parser.FunctionCall)call.parameters[0] )
             .orx( buildFilter( (Parser.FunctionCall)call.parameters[1] ) );
         }
-        if ( call.name.toLowerCase() == 'not' )
+    }
+
+    global class NotFactory implements FilterFactory
+    {
+        global Select.Filter build( Parser.FunctionCall call )
         {
             return buildFilter( (Parser.FunctionCall)call.parameters[0] ).notx();
         }
-
-        return null;
     }
 }
