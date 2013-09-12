@@ -56,8 +56,13 @@ global class DSLTest
             'not(and(hasChanged(Amount),isEqual(Amount,42)))',
             'and(hasChanged(Amount),isEqual(Amount,42.2))',
             'and(hasChanged(Amount),isEqual(Stage,"Complete"))',
-            'and(hasChanged(Amount),notEqual(Amount,42))'//,
-//            'and(isNew(),isEqual(Amount,42))'
+            'and(hasChanged(Amount),notEqual(Amount,42))',
+//            'and(isNew(),isEqual(Amount,42))',
+            'and(isNew(Amount),isNull(Stage))',
+            'and(notNull(Amount),startsWith(Stage,"Complete"))',
+            'and(endsWith(Stage," - 3"),contains(Stage,"Working"))',
+            'and(hasChildren(OpportunityLineItems),hasNoChildren(Budget__c))',
+            'and(all(),none())'
         };
 
         List<String> errorCases = new List<String>();

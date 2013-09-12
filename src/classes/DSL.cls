@@ -21,8 +21,18 @@ global class DSL
 
     global static Map<String, FilterFactory> registeredKeywords = new Map<String, FilterFactory>{
         'haschanged' => new Builtins.HasChangedFactory(),
+        'isnew' => new Builtins.IsNewFactory(),
         'isequal' => new Builtins.IsEqualFactory(),
         'notequal' => new Builtins.NotEqualFactory(),
+        'isnull' => new Builtins.IsNullFactory(),
+        'notnull' => new Builtins.NotNullFactory(),
+        'startswith' => new Builtins.StartsWithFactory(),
+        'endswith' => new Builtins.EndsWithFactory(),
+        'contains' => new Builtins.ContainsFactory(),
+        'haschildren' => new Builtins.HasChildrenFactory(),
+        'hasnochildren' => new Builtins.HasNoChildrenFactory(),
+        'all' => new Builtins.AllFactory(),
+        'none' => new Builtins.NoneFactory(),
         'and' => new Builtins.AndFactory(),
         'or' => new Builtins.OrFactory(),
         'not' => new Builtins.NotFactory()
