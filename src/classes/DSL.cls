@@ -38,6 +38,11 @@ global class DSL
         'not' => new Builtins.NotFactory()
     };
 
+    global static void register( String keyword, FilterFactory factory )
+    {
+        registeredKeywords.put( keyword.toLowerCase(), factory );
+    }
+
     global interface FilterFactory
     {
         Select.Filter build( Parser.FunctionCall call );

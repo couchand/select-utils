@@ -95,4 +95,22 @@ global class DSLTest
             System.assert( false, 'Error parsing the following cases:\n' + String.join( errorCases, '\n' ) );
         }
     }
+
+    private static testMethod void registerTest()
+    {
+        DSL.FilterFactory factory = new Builtins.AllFactory();
+
+        DSL.registeredKeywords.clear();
+
+        Test.startTest();
+
+            DSL.register( 'Foobar', factory );
+
+        Test.stopTest();
+
+        System.assertEquals( 1, DSL.registeredKeywords.size(),
+            'The keyword should be added to the registry' );
+        System.assertEquals( factory, DSL.registeredKeywords.get( 'foobar' ),
+            'The filter factory should be stored in the registry' );
+    }
 }
