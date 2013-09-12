@@ -76,13 +76,13 @@ global class DSLTest
                 try
                 {
                     parsed = DSL.parse( testCase );
+
+                    if ( parsed == null )
+                    {
+                        errorCases.add( testCase );
+                    }
                 }
                 catch ( Exception ex )
-                {
-                    errorCases.add( testCase );
-                }
-
-                if ( parsed == null )
                 {
                     errorCases.add( testCase );
                 }
