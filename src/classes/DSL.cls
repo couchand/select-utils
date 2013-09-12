@@ -33,7 +33,7 @@ global class DSL
         Select.Filter build( Parser.FunctionCall call );
     }
 
-    global class HasChangedFactory implements FilterFactory
+    global class HasChangedFactory implements DSL.FilterFactory
     {
         global Select.Filter build( Parser.FunctionCall call )
         {
@@ -41,7 +41,7 @@ global class DSL
         }
     }
 
-    global class IsEqualFactory implements FilterFactory
+    global class IsEqualFactory implements DSL.FilterFactory
     {
         global Select.Filter build( Parser.FunctionCall call )
         {
@@ -49,7 +49,7 @@ global class DSL
         }
     }
 
-    global class NotEqualFactory implements FilterFactory
+    global class NotEqualFactory implements DSL.FilterFactory
     {
         global Select.Filter build( Parser.FunctionCall call )
         {
@@ -57,29 +57,29 @@ global class DSL
         }
     }
 
-    global class AndFactory implements FilterFactory
+    global class AndFactory implements DSL.FilterFactory
     {
         global Select.Filter build( Parser.FunctionCall call )
         {
-            return buildFilter( (Parser.FunctionCall)call.parameters[0] )
-            .andx( buildFilter( (Parser.FunctionCall)call.parameters[1] ) );
+            return DSL.buildFilter( (Parser.FunctionCall)call.parameters[0] )
+            .andx( DSL.buildFilter( (Parser.FunctionCall)call.parameters[1] ) );
         }
     }
 
-    global class OrFactory implements FilterFactory
+    global class OrFactory implements DSL.FilterFactory
     {
         global Select.Filter build( Parser.FunctionCall call )
         {
-            return buildFilter( (Parser.FunctionCall)call.parameters[0] )
-            .orx( buildFilter( (Parser.FunctionCall)call.parameters[1] ) );
+            return DSL.buildFilter( (Parser.FunctionCall)call.parameters[0] )
+            .orx( DSL.buildFilter( (Parser.FunctionCall)call.parameters[1] ) );
         }
     }
 
-    global class NotFactory implements FilterFactory
+    global class NotFactory implements DSL.FilterFactory
     {
         global Select.Filter build( Parser.FunctionCall call )
         {
-            return buildFilter( (Parser.FunctionCall)call.parameters[0] ).notx();
+            return DSL.buildFilter( (Parser.FunctionCall)call.parameters[0] ).notx();
         }
     }
 }
